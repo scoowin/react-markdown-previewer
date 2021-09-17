@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import marked from "marked";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+let m = "";
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      input: `# Sample`,
+    };
+    this.change = this.change.bind(this);
+  }
+
+  change(e) {
+    this.state.input = e.target.value;
+    m = marked(this.state.input);
+    m = m.replace(/\\r\\n/g, "<br />");
+    pdisplay();
+    console.log(this.state.input);
+  }
+
+  componentDidMount() {
+    m = marked(this.state.input);
+    m = m.replace(/\\r\\n/g, "<br />");
+    pdisplay();
+  }
+
+  render() {
+    return (
+      <textarea id="editor" type="text" onChange={this.change}>
+        {this.state.input}
+      </textarea>
+    );
+  }
+}
+
+function pdisplay() {
+  document.getElementById("preview").innerHTML = m;
 }
 
 export default App;
